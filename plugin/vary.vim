@@ -8,9 +8,7 @@ function RetabIndents()
     if empty(matchstr(auto_striptab, &ft))
         return
     endif
-    let l:saved_view = winsaveview()
-    silent! %s/\t/\=repeat(" ", &tabstop)/
-    call winrestview(l:saved_view)
+    silent! retab/
 endfunction
 
 " http://vim.wikia.com/wiki/Remove_unwanted_spaces
@@ -19,10 +17,10 @@ function StripTrailingWhite()
     if empty(matchstr(auto_striptrail, &ft))
         return
     endif
-    let l:winview = winsaveview()
     silent! %s/\s\+$//
-    call winrestview(l:winview)
 endfunction
 
-autocmd BufWritePre,FileAppendPre,FileWritePre,FilterWritePre * :call StripTrailingWhite()
-autocmd BufWritePre,FileAppendPre,FileWritePre,FilterWritePre * :call RetabIndents()
+function RetabAndStrip()
+    :call RetabIndents()
+    :call StripTrailingWhite()
+endfunction
